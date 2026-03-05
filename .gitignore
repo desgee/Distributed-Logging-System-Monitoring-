@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+.venv/
+
+# Docker volumes (local data)
+prometheus_data/
+loki_data/
+grafana_data/
+
+# Sensitive files — never push these
+monitoring/alertmanager.yml
+
+# OS files
+.DS_Store
+Thumbs.db

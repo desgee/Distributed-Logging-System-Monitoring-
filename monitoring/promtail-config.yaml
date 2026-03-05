@@ -1,0 +1,36 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: nexcell-app
+    static_configs:
+      - targets:
+          - nexcell-app
+        labels:
+          job:       nexcell-app
+          container: nexcell-app
+          __path__:  /var/lib/docker/containers/*/*-json.log
+    pipeline_stages:
+      - json:
+          expressions:
+            log:    log
+            stream: stream
+      - json:
+          expressions:
+            level:   level
+            message: message
+            event:   event
+          source: log
+      - labels:
+          level:
+          event:
+          stream:
+      - output:
+          source: log
